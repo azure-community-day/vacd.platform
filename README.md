@@ -1,2 +1,1 @@
-# vacd.platform
-Deploying IaC through GitHub Actions - Platform
+# iac.azure.community.day
