@@ -35,4 +35,7 @@ resource "azurerm_app_service" "example" {
   site_config {
     linux_fx_version = "DOTNETCORE|2.1"
   }
+  app_settings = {
+    "VACD" = "Hello world!"
+  }
 }
