@@ -26,11 +26,11 @@ variable "asp_name" {
 }
 variable "asp_tier" {
   description = "Tier of the App Service Plan"
-  default     = "Standard"
+  default     = "Basic"
 }
 variable "asp_size" {
   description = "Size of the App Service Plan"
-  default     = "S1"
+  default     = "B1"
 }
 
 ###################
