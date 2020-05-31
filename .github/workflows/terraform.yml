@@ -93,12 +93,6 @@ jobs:
         echo ::set-env name=WEBAPPNAME::$(terraform output name)
         echo ::set-env name=RSG::$(terraform output resource_group)
         
-    - name: Terraform Destroy
-      id: tf_destroy
-      if: github.ref == 'refs/heads/master' && github.event_name == 'push'
-      run: |
-        cd Terraform && terraform destroy -auto-approve
-
     - name: Login via Az module
       uses: azure/login@v1.1
       with:
