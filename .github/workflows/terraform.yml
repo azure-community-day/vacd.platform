@@ -43,7 +43,6 @@ jobs:
       # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
     - name: Terraform Apply
       id: tf_apply
-      if: github.ref == 'refs/heads/master' && github.event_name == 'push'
       run: |
         cd Terraform && terraform apply -no-color -auto-approve infraplan
         echo ::set-env name=WEBAPPNAME::$(terraform output name)
@@ -68,7 +67,7 @@ jobs:
           $rsgname = $Env:RSG.split("::")[10].Trim()
           Write-Host "ResourceGroup:$($rsgname)"
           $publishProfile = Get-AzWebAppPublishingProfile -Format WebDeploy -Name $webappname -ResourceGroupName $rsgname
-          echo ::set-env name=PUBLISHSETTINGS::$publishProfile
+          $publishSettings | Out-File "publishProfile.txt"
         azPSVersion: 'latest'
         
     - name: Setup .NET Core
@@ -87,8 +86,9 @@ jobs:
     
     - name: Run ConsoleSync
       run: |
-        echo ${{ env.PUBLISHSETTINGS }}
-        ./ConsoleSync/published/ConsoleSync ${{ secrets.ORG_PAT }} ${{ env.PUBLISHSETTINGS }}
+        ls
+        publishSettings=$(<publishSettings.txt)
+        echo $publishSettings
         
 
         
