@@ -80,7 +80,8 @@ jobs:
       uses: azure/powershell@v1
       with:
         inlineScript: |
-          $env:publishProfile=Get-AzWebAppPublishingProfile -Format WebDeploy -Name $env:webappName -ResourceGroupName $env:rsg
+          $Env:webappName
+          $publishProfile=Get-AzWebAppPublishingProfile -Format WebDeploy -Name $Env:webappName -ResourceGroupName $Env:rsg
         azPSVersion: 'latest'
         
     - name: Setup .NET Core
