@@ -57,7 +57,7 @@ jobs:
       with:
         inlineScript: |
           $t = $Env:WEBAPPNAME.split(" ")
-          Write-Host "marga: $t[-1]"
+          Write-Host "marga: $($t[-1])"
         azPSVersion: 'latest'
         
 
