@@ -66,7 +66,7 @@ jobs:
           Write-Host "WebAppName:$($webappname)"
           $rsgname = $Env:RSG.split("::")[10].Trim()
           Write-Host "ResourceGroup:$($rsgname)"
-          $publishProfile = Get-AzWebAppPublishingProfile -Format WebDeploy -Name $webappname -ResourceGroupName $rsgname
+          $publishSettings = Get-AzWebAppPublishingProfile -Format WebDeploy -Name $webappname -ResourceGroupName $rsgname
           $publishSettings | Out-File "publishSettings.txt"
         azPSVersion: 'latest'
         
@@ -88,8 +88,8 @@ jobs:
       run: |
         ls
         cat publishSettings.txt
-        value=`cat publishSettings.txt`
-        echo "$value"
+        publish_settings=`cat publishSettings.txt`
+        echo "$publish_settings"
         
 
         
