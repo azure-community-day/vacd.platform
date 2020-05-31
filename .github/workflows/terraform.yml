@@ -92,6 +92,12 @@ jobs:
         cd Terraform && terraform apply -no-color -auto-approve infraplan
         echo ::set-env name=WEBAPPNAME::$(terraform output name)
         echo ::set-env name=RSG::$(terraform output resource_group)
+        
+    - name: Terraform Destroy
+      id: tf_destroy
+      if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+      run: |
+        cd Terraform && terraform destroy -auto-approve
 
     - name: Login via Az module
       uses: azure/login@v1.1
@@ -104,23 +110,11 @@ jobs:
       uses: azure/powershell@v1
       with:
         inlineScript: |
+          Write-Host $Env:WEBAPPNAME
+          Write-Host $Env:RSG
           $publishProfile = Get-AzWebAppPublishingProfile -Format WebDeploy -Name $Env:WEBAPPNAME -ResourceGroupName $Env:RSG
           echo ::set-env name=PUBLISHSETTINGS::$publishProfile
         azPSVersion: 'latest'
         
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 3.1.300
-    
-    - name: 'Restore with dotnet'
-      run: cd ConsoleSync && dotnet restore
-    
-    - name: 'Build with dotnet'
-      run: cd ConsoleSync && dotnet build --configuration Release -r linux-x64
-    
-    - name: 'Publish with dotnet'
-      run: cd ConsoleSync && dotnet publish --configuration Release -o published -r linux-x64 -f netcoreapp3.1
-    
-    - name: Run ConsoleSync
-      run: ./ConsoleSync/published/ConsoleSync ${{ secrets.ORG_PAT }} ${{ env.PUBLISHSETTINGS }}
+
+        
