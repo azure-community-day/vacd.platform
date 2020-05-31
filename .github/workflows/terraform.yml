@@ -54,25 +54,14 @@ jobs:
       uses: azure/powershell@v1
       env:
         WEBAPPNAME: ${{ env.WEBAPPNAME }} 
+        RSG: ${{ env.RSG }}
       with:
         inlineScript: |
-          $t = $Env:WEBAPPNAME.split("::")
-          $t.length
-          Write-Host "marga: $($t[1])"
-          Write-Host "marga: $($t[2])"
-          Write-Host "marga: $($t[3])"
-          Write-Host "marga: $($t[4])"
-          Write-Host "marga: $($t[5])"
-          Write-Host "marga: $($t[6])"
-          Write-Host "marga: $($t[7])"
-          Write-Host "marga: $($t[8])"
-          Write-Host "marga: $($t[9])"
-          Write-Host "marga: $($t[10])"
-          Write-Host "marga: $($t[11])"
-          Write-Host "marga: $($t[12])"
-          Write-Host "marga: $($t[13])"
-          Write-Host "marga: $($t[14])"
-          Write-Host "marga: $($t[15])"
+          $webappname = $Env:WEBAPPNAME.split("::")[10]
+          $rsgname = $Env:RSG.split("::")[10]
+          Write-Host "WebAppName $($webappname)"
+          Write-Host "RsgName $($rsgname)"
+
         azPSVersion: 'latest'
         
 
