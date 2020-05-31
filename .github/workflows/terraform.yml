@@ -45,9 +45,9 @@
 name: 'Terraform'
 
 on:
-  #push:
-  #  branches:
-  #  - master
+  push:
+    branches:
+    - master
   pull_request:
 
 jobs:
@@ -104,7 +104,7 @@ jobs:
       uses: azure/powershell@v1
       with:
         inlineScript: |
-          publishProfile=$(Get-AzWebAppPublishingProfile -Format WebDeploy -Name $env:webappName -OutputFile "PublishProfile" -ResourceGroupName $env:rsg)
+          publishProfile=$(Get-AzWebAppPublishingProfile -Format WebDeploy -Name $env:webappName -ResourceGroupName $env:rsg)
         azPSVersion: 'latest'
         
     - name: Setup .NET Core
