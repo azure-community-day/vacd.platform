@@ -71,7 +71,7 @@ jobs:
         creds: ${{secrets.AZURE_CREDENTIALS}}
         enable-AzPSSession: true 
 
-    - name: Run Azure PowerShell script
+    - name: Export vars
       run: |
         export webappName="api-github-azurecommunityday"
         export rsg="CommunityDayRSG"
