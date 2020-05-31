@@ -104,5 +104,24 @@ jobs:
       uses: azure/powershell@v1
       with:
         inlineScript: |
-          $publishProfile = Get-AzWebAppPublishingProfile -Format WebDeploy -Name $env:webappName -OutputFile "PublishProfile" -ResourceGroupName $env:rsg
+          publishProfile=$(Get-AzWebAppPublishingProfile -Format WebDeploy -Name $env:webappName -OutputFile "PublishProfile" -ResourceGroupName $env:rsg)
         azPSVersion: 'latest'
+        
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.4
+    
+    - name: 'Restore with dotnet'
+      run: cd ConsoleSync && dotnet restore
+    
+    - name: 'Build with dotnet'
+      run: cd ConsoleSync && dotnet build --configuration Release -r linux-x64
+    
+    - name: 'Publish with dotnet'
+      run: cd ConsoleSync && dotnet publish --configuration Release -o published -r linux-x64 -f netcoreapp3.1
+    
+    - name: Run ConsoleSync
+      run: ./ConsoleSync/published/ConsoleSync ${{ secrets.ORGPAT }} $publishProfile
+      
+    
