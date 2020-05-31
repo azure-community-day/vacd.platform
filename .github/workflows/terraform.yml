@@ -90,8 +90,8 @@ jobs:
       if: github.ref == 'refs/heads/master' && github.event_name == 'push'
       run: |
         cd Terraform && terraform apply -no-color -auto-approve infraplan
-        WEBAPPNAME=$(terraform output -no-color name)
-        RSG=$(terraform output -no-color resource_group)
+        WEBAPPNAME=$(terraform output name)
+        RSG=$(terraform output resource_group)
         echo ::set-output name=WEBAPPNAME::$WEBAPPNAME
         echo ::set-output name=RSG::$RSG    
         
