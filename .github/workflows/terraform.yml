@@ -81,7 +81,7 @@ jobs:
 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
-      run: cd Terraform && terraform plan -no-color -var "asp_name=api-github-appserviceplan2" -var "app_name=api-github-azurecommunityday2" -var subscription_id=${{ secrets.SUBSCRIPTION_ID }} -var tenant_id=${{ secrets.TENANT_ID }} -var client_id=${{ secrets.CLIENT_ID }} -var client_secret=${{ secrets.CLIENT_SECRET }} -out infraplan
+      run: cd Terraform && terraform plan -no-color -var "asp_name=api-github-appserviceplan" -var "app_name=api-github-azurecommunityday" -var subscription_id=${{ secrets.SUBSCRIPTION_ID }} -var tenant_id=${{ secrets.TENANT_ID }} -var client_id=${{ secrets.CLIENT_ID }} -var client_secret=${{ secrets.CLIENT_SECRET }} -out infraplan
     
       # On push to master, build or change infrastructure according to Terraform configuration files
       # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
