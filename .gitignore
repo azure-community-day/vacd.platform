@@ -1,1 +1,5 @@
-.terraform
+**/*.terraform
+**/*.tfstate*
+**/*plan*
+**/*.PublishSettings
+**/provider.tf

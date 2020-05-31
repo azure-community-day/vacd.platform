@@ -1,12 +1,12 @@
-# Configure the Azure Provider
+# # Comment for local execution
 provider "azurerm" {
   version = "=2.12.0"
   features {}
   skip_provider_registration = true
-  client_id       = var.client_id
-  client_secret   = var.client_secret
-  tenant_id       = var.tenant_id
-  subscription_id = var.subscription_id
+  client_id                  = var.client_id
+  client_secret              = var.client_secret
+  tenant_id                  = var.tenant_id
+  subscription_id            = var.subscription_id
 }
 
 data "azurerm_resource_group" "plat_rg" {
@@ -26,7 +26,7 @@ resource "azurerm_app_service_plan" "app_service_plan" {
   }
 }
 
-resource "azurerm_app_service" "example" {
+resource "azurerm_app_service" "webapp" {
   name                = var.app_name
   location            = data.azurerm_resource_group.plat_rg.location
   resource_group_name = data.azurerm_resource_group.plat_rg.name

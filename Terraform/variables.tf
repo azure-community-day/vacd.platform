@@ -1,14 +1,18 @@
 variable "client_id" {
   description = "Application Id of the Service Principal that will deploy the IaC"
+  default     = ""
 }
 variable "client_secret" {
   description = "Secret of the Service Principal that will deploy the IaC"
+  default     = ""
 }
 variable "tenant_id" {
   description = "Tenant Id of the subscription"
+  default     = ""
 }
 variable "subscription_id" {
   description = "Subscription Id where the IaC will be deployed"
+  default     = ""
 }
 ###################
 # App Service Plan
