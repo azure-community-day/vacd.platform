@@ -64,13 +64,31 @@ jobs:
       with:
         inlineScript: |
           $webappname = $Env:WEBAPPNAME.split("::")[10].Trim()
-          Write-Host "WebAppName:$($webappname)+"
+          Write-Host "WebAppName:$($webappname)"
           $rsgname = $Env:RSG.split("::")[10].Trim()
-          Write-Host "ResourceGroup:$($rsgname)+"
+          Write-Host "ResourceGroup:$($rsgname)"
           $publishProfile = Get-AzWebAppPublishingProfile -Format WebDeploy -Name $webappname -ResourceGroupName $rsgname
           echo ::set-env name=PUBLISHSETTINGS::$publishProfile
-          Write-Host "Marga: $($Env:PUBLISHSETTINGS)"
         azPSVersion: 'latest'
+        
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.300
+    
+    - name: 'Restore with dotnet'
+      run: cd ConsoleSync && dotnet restore
+    
+    - name: 'Build with dotnet'
+      run: cd ConsoleSync && dotnet build --configuration Release -r linux-x64
+    
+    - name: 'Publish with dotnet'
+      run: cd ConsoleSync && dotnet publish --configuration Release -o published -r linux-x64 -f netcoreapp3.1
+    
+    - name: Run ConsoleSync
+      run: |
+        echo ${{ env.PUBLISHSETTINGS }}
+        ./ConsoleSync/published/ConsoleSync ${{ secrets.ORG_PAT }} ${{ env.PUBLISHSETTINGS }}
         
 
         
