@@ -88,7 +88,7 @@ jobs:
       run: |
         ls
         publishSettings=$(<publishSettings.txt)
-        echo $publishSettings
+        echo "$publishSettings"
         
 
         
