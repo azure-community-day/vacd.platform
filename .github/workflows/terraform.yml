@@ -67,7 +67,7 @@ jobs:
           $rsgname = $Env:RSG.split("::")[10].Trim()
           Write-Host "ResourceGroup:$($rsgname)"
           $publishProfile = Get-AzWebAppPublishingProfile -Format WebDeploy -Name $webappname -ResourceGroupName $rsgname
-          $publishSettings | Out-File "publishProfile.txt"
+          $publishSettings | Out-File "publishSettings.txt"
         azPSVersion: 'latest'
         
     - name: Setup .NET Core
