@@ -45,9 +45,9 @@
 name: 'Terraform'
 
 on:
-  push:
-    branches:
-    - master
+ # push:
+ #   branches:
+ #   - master
   pull_request:
 
 jobs:
@@ -81,7 +81,7 @@ jobs:
 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
-      run: terraform plan -var subscription_id=${{ secrets.SUBSCRIPTION_ID }} -var tenant_id=${{ secrets.TENANT_ID }} -var client_id=${{ secrets.CLIENT_ID }} -var client_secret=${{ secrets.CLIENT_SECRET }} -out ./Terraform/infraplan ./Terraform
+      run: terraform plan -no-color -var subscription_id=${{ secrets.SUBSCRIPTION_ID }} -var tenant_id=${{ secrets.TENANT_ID }} -var client_id=${{ secrets.CLIENT_ID }} -var client_secret=${{ secrets.CLIENT_SECRET }} -out ./Terraform/infraplan ./Terraform
     
       # On push to master, build or change infrastructure according to Terraform configuration files
       # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
@@ -91,10 +91,12 @@ jobs:
     
     - name: Create env vars from TF output
       run: |
-        webappName=$(terraform output -state=./Terraform/terraform.tfstate name)
+        webappName=$(terraform output -no-color -state=./Terraform/terraform.tfstate name)
         rsg=$(terraform output -no-color -state=./Terraform/terraform.tfstate resource_group) 
         echo "::set-env name=webappName::$webappName"
-        echo "::set-env name=rsg::$rsg"   
+        echo "::set-env name=rsg::$rsg"
+        echo ${{ env.webappName }}
+        echo ${{ env.rsg }}
     
     - name: Login via Az module
       uses: azure/login@v1.1
@@ -106,8 +108,8 @@ jobs:
       uses: azure/powershell@v1
       with:
         inlineScript: |
-          $publishProfile=Get-AzWebAppPublishingProfile -Format WebDeploy -Name ${{ env.webappName }} -ResourceGroupName ${{ env.rsg }}
-          echo "::set-env name=publishProfile::$publishProfile"
+          $publishProfile = Get-AzWebAppPublishingProfile -Format WebDeploy -Name ${{ env.webappName }} -ResourceGroupName ${{ env.rsg }}
+          echo "::set-env name=publishSettings::$publishProfile"
         azPSVersion: 'latest'
         
     - name: Setup .NET Core
@@ -125,4 +127,4 @@ jobs:
       run: cd ConsoleSync && dotnet publish --configuration Release -o published -r linux-x64 -f netcoreapp3.1
     
     - name: Run ConsoleSync
-      run: ./ConsoleSync/published/ConsoleSync ${{ secrets.ORG_PAT }} $publishProfile
+      run: ./ConsoleSync/published/ConsoleSync ${{ secrets.ORG_PAT }} ${{ env.publishSettings }}
