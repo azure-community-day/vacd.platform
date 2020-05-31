@@ -63,9 +63,9 @@ jobs:
         RSG: ${{ env.RSG }}
       with:
         inlineScript: |
-          $webappname = $Env:WEBAPPNAME.split("::")[10]
+          $webappname = $Env:WEBAPPNAME.split("::")[10].Trim()
           Write-Host "WebAppName:$($webappname)+"
-          $rsgname = $Env:RSG.split("::")[10]
+          $rsgname = $Env:RSG.split("::")[10].Trim()
           Write-Host "ResourceGroup:$($rsgname)+"
           $publishProfile = Get-AzWebAppPublishingProfile -Format WebDeploy -Name $webappname -ResourceGroupName $rsgname
           echo ::set-env name=PUBLISHSETTINGS::$publishProfile
