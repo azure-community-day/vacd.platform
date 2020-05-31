@@ -87,8 +87,9 @@ jobs:
     - name: Run ConsoleSync
       run: |
         ls
-        publishSettings=$(<publishSettings.txt)
-        echo "$publishSettings"
+        cat publishSettings.txt
+        value=`cat publishSettings.txt`
+        echo "$value"
         
 
         
