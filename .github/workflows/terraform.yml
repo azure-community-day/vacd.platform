@@ -91,8 +91,8 @@ jobs:
     
     - name: Create env vars from TF output
       run: |
-        export webappName=$(terraform output -state=./Terraform/terraform.tfstate name)
-        export rsg=$(terraform output -no-color -state=./Terraform/terraform.tfstate resource_group) 
+        webappName=$(terraform output -state=./Terraform/terraform.tfstate name)
+        rsg=$(terraform output -no-color -state=./Terraform/terraform.tfstate resource_group) 
         echo "::set-env name=webappName::$webappName"
         echo "::set-env name=rsg::$rsg"   
     
