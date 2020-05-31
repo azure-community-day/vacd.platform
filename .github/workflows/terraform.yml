@@ -77,18 +77,16 @@ jobs:
         export rsg="CommunityDayRSG"
         echo "::set-env name=webappName::$webappName"
         echo "::set-env name=rsg::$rsg"
-
-    - name: Run Azure PowerShell script
-      uses: azure/powershell@v1
-      with:
-        inlineScript: |
+    
+    - name: Az
+      run: |
           $azurePassword = ConvertTo-SecureString ${{ secrets.CLIENT_SECRET }} -AsPlainText -Force
           $psCred = New-Object System.Management.Automation.PSCredential(${{ secrets.CLIENT_ID }} , $azurePassword)
           Connect-AzAccount -Credential $psCred -TenantId ${{ secrets.TENANT_ID }} -ServicePrincipal
           $publishProfile=Get-AzWebAppPublishingProfile -Format WebDeploy -Name ${{ env.webappName }} -ResourceGroupName ${{ env.rsg }}
           echo "::set-env name=publishProfile::$publishProfile"
           Write-Host $publishProfile
-        azPSVersion: 'latest'
+      shell: pwsh 
         
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
