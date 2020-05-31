@@ -56,7 +56,7 @@ jobs:
         WEBAPPNAME: ${{ env.WEBAPPNAME }} 
       with:
         inlineScript: |
-          $t = $Env:WEBAPPNAME.split(" ")
+          $t = $Env:WEBAPPNAME.split("::")
           $t.length
           Write-Host "marga: $($t[13])"
           Write-Host "marga: $($t[14])"
