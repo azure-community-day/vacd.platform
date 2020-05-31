@@ -56,7 +56,8 @@ jobs:
         WEBAPPNAME: ${{ env.WEBAPPNAME }} 
       with:
         inlineScript: |
-          Write-Host "Variable de entorno: $($Env:WEBAPPNAME)"
+          $t = $Env:WEBAPPNAME.split(" ")
+          Write-Host "marga: $t[-1]"
         azPSVersion: 'latest'
         
 
