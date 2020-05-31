@@ -65,11 +65,11 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-#    - name: Login via Az module
-#      uses: azure/login@v1.1
-#      with:
-#        creds: ${{secrets.AZURE_CREDENTIALS}}
-#        enable-AzPSSession: true 
+    - name: Login via Az module
+      uses: azure/login@v1.1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+        enable-AzPSSession: true 
 
     - name: Export vars
       run: |
@@ -78,15 +78,14 @@ jobs:
         echo "::set-env name=webappName::$webappName"
         echo "::set-env name=rsg::$rsg"
     
-    - name: Az
-      run: |
-          $azurePassword = ConvertTo-SecureString ${{ secrets.CLIENT_SECRET }} -AsPlainText -Force
-          $psCred = New-Object System.Management.Automation.PSCredential(${{ secrets.CLIENT_ID }} , $azurePassword)
-          Connect-AzAccount -Credential $psCred -TenantId ${{ secrets.TENANT_ID }} -ServicePrincipal
+    - name: Run Azure PowerShell script
+      uses: azure/powershell@v1
+      with:
+        inlineScript: |
           $publishProfile=Get-AzWebAppPublishingProfile -Format WebDeploy -Name ${{ env.webappName }} -ResourceGroupName ${{ env.rsg }}
           echo "::set-env name=publishProfile::$publishProfile"
           Write-Host $publishProfile
-      shell: pwsh 
+        azPSVersion: 'latest'
         
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
