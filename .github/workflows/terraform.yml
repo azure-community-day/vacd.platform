@@ -49,12 +49,6 @@ jobs:
         echo ::set-env name=WEBAPPNAME::$(terraform output name)
         echo ::set-env name=RSG::$(terraform output resource_group)
         
-    - name: Login via Az module
-      uses: azure/login@v1.1
-      with:
-        creds: ${{secrets.AZURE_CREDENTIALS}}
-        enable-AzPSSession: true 
-    
     - name: Get Publish Settings from WebApp
       id: get_publishSettings
       uses: azure/powershell@v1
@@ -62,7 +56,7 @@ jobs:
         WEBAPPNAME: ${{ env.WEBAPPNAME }} 
       with:
         inlineScript: |
-          Write-Host $Env:WEBAPPNAME
+          Write-Host "Variable de entorno: $($Env:WEBAPPNAME)"
         azPSVersion: 'latest'
         
 
