@@ -73,18 +73,36 @@ jobs:
 
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
-      run: terraform init
+      run: terraform init -no-color ./Terraform
 
     # Validates the Terraform syntax
     - name: Terraform Validate
-      run: terraform validate
+      run: terraform validate -no-color ./Terraform
 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
-      run: terraform plan -var subscription_id=${{ secrets.SUBSCRIPTION_ID }} -var tenant_id=${{ secrets.TENANT_ID }} -var client_id=${{ secrets.CLIENT_ID }} -var client_secret=${{ secrets.CLIENT_SECRET }} -out infraplan
+      run: terraform plan -var subscription_id=${{ secrets.SUBSCRIPTION_ID }} -var tenant_id=${{ secrets.TENANT_ID }} -var client_id=${{ secrets.CLIENT_ID }} -var client_secret=${{ secrets.CLIENT_SECRET }} -out ./Terraform/infraplan ./Terraform
     
       # On push to master, build or change infrastructure according to Terraform configuration files
       # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
     - name: Terraform Apply
       if: github.ref == 'refs/heads/master' && github.event_name == 'push'
-      run: terraform apply -auto-approve infraplan
+      run: terraform apply -no-color -auto-approve -state=./Terraform/terraform.tfstate ./Terraform/infraplan
+    
+    - name: Create env vars from TF output
+      run: |
+        webappName=$(terraform output -state=./Terraform/terraform.tfstate name)
+        rsg=$(terraform output -no-color -state=./Terraform/terraform.tfstate resource_group)
+        
+    - name: Login via Az module
+      uses: azure/login@v1.1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+        enable-AzPSSession: true 
+        
+    - name: Run Azure PowerShell script
+      uses: azure/powershell@v1
+      with:
+        inlineScript: |
+          $publishProfile = Get-AzWebAppPublishingProfile -Format WebDeploy -Name $env:webappName -OutputFile "PublishProfile" -ResourceGroupName $env:rsg
+        azPSVersion: 'latest'
