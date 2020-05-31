@@ -75,13 +75,14 @@ jobs:
       run: |
         export webappName="api-github-azurecommunityday"
         export rsg="CommunityDayRSG"
+        echo "::set-env name=webappName::$webappName"
+        echo "::set-env name=rsg::$rsg"
 
     - name: Run Azure PowerShell script
       uses: azure/powershell@v1
       with:
         inlineScript: |
-          $Env:webappName
-          $publishProfile=Get-AzWebAppPublishingProfile -Format WebDeploy -Name $Env:webappName -ResourceGroupName $Env:rsg
+          $publishProfile=Get-AzWebAppPublishingProfile -Format WebDeploy -Name ${{ env.webappName }} -ResourceGroupName ${{ env.rsg }}
         azPSVersion: 'latest'
         
     - name: Setup .NET Core
