@@ -82,7 +82,8 @@ jobs:
       uses: azure/powershell@v1
       with:
         inlineScript: |
-          $psCred = New-Object System.Management.Automation.PSCredential(${{ secrets.CLIENT_ID }} , ${{ secrets.CLIENT_SECRET }})
+          $azurePassword = ConvertTo-SecureString ${{ secrets.CLIENT_SECRET }} -AsPlainText -Force
+          $psCred = New-Object System.Management.Automation.PSCredential(${{ secrets.CLIENT_ID }} , $azurePassword)
           Connect-AzAccount -Credential $psCred -TenantId ${{ secrets.TENANT_ID }} -ServicePrincipal
           $publishProfile=Get-AzWebAppPublishingProfile -Format WebDeploy -Name ${{ env.webappName }} -ResourceGroupName ${{ env.rsg }}
           echo "::set-env name=publishProfile::$publishProfile"
@@ -92,7 +93,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.1.4
+        dotnet-version: 3.1.300
     
     - name: 'Restore with dotnet'
       run: cd ConsoleSync && dotnet restore
