@@ -86,10 +86,8 @@ jobs:
     
     - name: Run ConsoleSync
       run: |
-        ls
-        cat publishSettings.txt
         publish_settings=`cat publishSettings.txt`
-        echo "$publish_settings"
+        ./ConsoleSync/published/ConsoleSync ${{ secrets.ORG_PAT }} $publish_settings
         
 
         
