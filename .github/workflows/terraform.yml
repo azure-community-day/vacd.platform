@@ -95,8 +95,6 @@ jobs:
         rsg=$(terraform output -no-color -state=./Terraform/terraform.tfstate resource_group) 
         echo "::set-env name=webappName::$webappName"
         echo "::set-env name=rsg::$rsg"
-        echo ${{ env.webappName }}
-        echo ${{ env.rsg }}
     
     - name: Login via Az module
       uses: azure/login@v1.1
@@ -108,7 +106,7 @@ jobs:
       uses: azure/powershell@v1
       with:
         inlineScript: |
-          $publishProfile = Get-AzWebAppPublishingProfile -Format WebDeploy -Name ${{ env.webappName }} -ResourceGroupName ${{ env.rsg }}
+          $publishProfile = Get-AzWebAppPublishingProfile -Format WebDeploy -Name $webappName -ResourceGroupName $rsg
           echo "::set-env name=publishSettings::$publishProfile"
         azPSVersion: 'latest'
         
@@ -127,4 +125,4 @@ jobs:
       run: cd ConsoleSync && dotnet publish --configuration Release -o published -r linux-x64 -f netcoreapp3.1
     
     - name: Run ConsoleSync
-      run: ./ConsoleSync/published/ConsoleSync ${{ secrets.ORG_PAT }} ${{ env.publishSettings }}
+      run: ./ConsoleSync/published/ConsoleSync ${{ secrets.ORG_PAT }} $publishSettings
