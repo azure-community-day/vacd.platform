@@ -19,14 +19,12 @@ variable "subscription_id" {
 ###################
 variable "rg_name" {
   description = "Name of the Resource Group"
-  default     = "CommunityDayRSG"
 }
 ###################
 # App Service Plan
 ###################
 variable "asp_name" {
   description = "Name of the App Service Plan"
-  default     = "api-github-appserviceplan"
 }
 variable "asp_tier" {
   description = "Tier of the App Service Plan"
@@ -34,7 +32,6 @@ variable "asp_tier" {
 }
 variable "asp_size" {
   description = "Size of the App Service Plan"
-  default     = "B1"
 }
 
 ###################
@@ -42,5 +39,4 @@ variable "asp_size" {
 ###################
 variable "app_name" {
   description = "Name of the Web Application"
-  default     = "api-github-azurecommunityday"
 }
