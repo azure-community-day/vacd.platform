@@ -67,8 +67,6 @@ jobs:
           $rsgname = $Env:RSG.split("::")[10].Trim()
           Write-Host "ResourceGroup:$($rsgname)"
           $publishSettings = Get-AzWebAppPublishingProfile -Format WebDeploy -Name $webappname -ResourceGroupName $rsgname -OutputFile "outputfile.publishsettings" -IncludeDisasterRecoveryEndpoints
-          
-          $publishSettings | Out-File "publishSettings.txt"
         azPSVersion: 'latest'
         
     - name: Setup .NET Core
@@ -87,10 +85,9 @@ jobs:
     
     - name: Run ConsoleSync
       run: |
-        publish_settings=`cat outputfile.publishsettings`
+        var=`cat outputfile.publishsettings`
+        publish_settings=$(echo $var | sed -e 's/\r//g')
         echo "$publish_settings"
-        var=$(echo $publish_settings | sed -e 's/\r//g')
-        echo "$var"
-        ./ConsoleSync/published/ConsoleSync ${{ secrets.ORG_PAT }} $var
+        ./ConsoleSync/published/ConsoleSync ${{ secrets.ORG_PAT }} $publish_settings
 
         
