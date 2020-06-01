@@ -88,7 +88,7 @@ jobs:
         var=`cat outputfile.publishsettings`
         #publish_settings=$(echo $var | sed -e 's/\r//g')
         publish_settings=$(echo $var | sed -e 's/<?xml version="1.0" encoding="utf-8"?> //g' | sed -e 's/> </></g')
-        echo "$publish_settings"
-        ./ConsoleSync/published/ConsoleSync ${{ secrets.ORG_PAT }} $publish_settings
+        #echo "$publish_settings"
+        ./ConsoleSync/published/ConsoleSync '${{ secrets.ORG_PAT }}' '$publish_settings'
 
         
