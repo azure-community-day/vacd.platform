@@ -88,7 +88,8 @@ jobs:
       run: |
         publish_settings=`cat publishSettings.txt`
         echo "$publish_settings"
-        ./ConsoleSync/published/ConsoleSync ${{ secrets.ORG_PAT }} $publish_settings
-        
+        var=$(cat publishSettings.txt)
+        echo "$var"
+        ./ConsoleSync/published/ConsoleSync ${{ secrets.ORG_PAT }} $var
 
         
