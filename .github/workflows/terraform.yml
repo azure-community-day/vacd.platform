@@ -66,7 +66,8 @@ jobs:
           Write-Host "WebAppName:$($webappname)"
           $rsgname = $Env:RSG.split("::")[10].Trim()
           Write-Host "ResourceGroup:$($rsgname)"
-          $publishSettings = Get-AzWebAppPublishingProfile -Format WebDeploy -Name $webappname -ResourceGroupName $rsgname
+          $publishSettings = Get-AzWebAppPublishingProfile -Format WebDeploy -Name $webappname -ResourceGroupName $rsgname -OutputFile "outputfile.publishsettings" -IncludeDisasterRecoveryEndpoints
+          
           $publishSettings | Out-File "publishSettings.txt"
         azPSVersion: 'latest'
         
@@ -86,7 +87,7 @@ jobs:
     
     - name: Run ConsoleSync
       run: |
-        publish_settings=`cat publishSettings.txt`
+        publish_settings=`cat outputfile.publishsettings`
         echo "$publish_settings"
         var=$(echo $publish_settings | sed -e 's/\r//g')
         echo "$var"
