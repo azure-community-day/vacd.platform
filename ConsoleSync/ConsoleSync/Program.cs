@@ -46,8 +46,8 @@ namespace ConsoleSync
             //Console.WriteLine(response.Content);
 
             // Get webapp name and change secret
-            string webappName = args[1].Split('$')[0].Split('=')[1];
-            Console.WriteLine("WebAppName is: " + webappName);
+            string webappName = args[1].Split('$')[0].Split('=')[1].Split(" - ")[0];
+            //Console.WriteLine("WebAppName is: " + webappName);
 
             secretValue = System.Text.Encoding.UTF8.GetBytes(webappName);
             sealedPublicKeyBox = Sodium.SealedPublicKeyBox.Create(secretValue, publicKey);
