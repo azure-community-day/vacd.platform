@@ -27,7 +27,6 @@ namespace ConsoleSync
             dynamic responseParsed = JObject.Parse(response.Content);
             string repo1_id = Convert.ToString(responseParsed.repositories[0].id);
             string repo2_id = Convert.ToString(responseParsed.repositories[1].id);
-            //string public_key = Convert.ToString(api.key);
             //Console.WriteLine(response.Content);
 
             // Update secret org AZURE_WEBAPP_PUBLISH_PROFILE
@@ -47,7 +46,7 @@ namespace ConsoleSync
 
             // Get webapp name and change secret
             string webappName = args[1].Split('$')[0].Split('=')[1].Split(" - ")[0].Substring(1);
-            Console.WriteLine("WebAppName is: " + webappName);
+            //Console.WriteLine("WebAppName is: " + webappName);
 
             secretValue = System.Text.Encoding.UTF8.GetBytes(webappName);
             sealedPublicKeyBox = Sodium.SealedPublicKeyBox.Create(secretValue, publicKey);
