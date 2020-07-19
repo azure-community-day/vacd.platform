@@ -61,7 +61,7 @@ namespace ConsoleSync
             //Console.WriteLine(response.Content);
 
             //Run vacd.api workflow, action id 121672254
-            client = new RestClient("https://api.github.com/repos/azure-community-day/vacd.api/actions/runs/121672254/rerun");
+            client = new RestClient("https://api.github.com/repos/azure-community-day/vacd.api/actions/runs/174433384/rerun");
             client.Timeout = -1;
             request = new RestRequest(Method.POST);
             request.AddHeader("Authorization", "token " + args[0]);
