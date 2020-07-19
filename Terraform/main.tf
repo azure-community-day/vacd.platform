@@ -1,4 +1,13 @@
 # # Comment for local execution
+terraform {
+  backend "azurerm" {
+    resource_group_name  = "CommunityDayRSG"
+    storage_account_name = "backendtfvacd"
+    container_name       = "tfstate"
+    key                  = "PlatformVACD.tfstate"
+  }
+}
+
 provider "azurerm" {
   version = "=2.12.0"
   features {}
