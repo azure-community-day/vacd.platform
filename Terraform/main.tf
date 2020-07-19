@@ -12,10 +12,6 @@ provider "azurerm" {
   version = "=2.12.0"
   features {}
   skip_provider_registration = true
-  client_id                  = var.client_id
-  client_secret              = var.client_secret
-  tenant_id                  = var.tenant_id
-  subscription_id            = var.subscription_id
 }
 
 data "azurerm_resource_group" "plat_rg" {
