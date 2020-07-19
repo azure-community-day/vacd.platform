@@ -5,6 +5,7 @@ terraform {
     storage_account_name = "backendtfvacd"
     container_name       = "tfstate"
     key                  = "PlatformVACD.tfstate"
+    sas_token            = ""
   }
 }
 
