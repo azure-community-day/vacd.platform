@@ -22,21 +22,6 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-
-    # Login with Az Creds in Az CLI and Az PS
-    - name: Login via Az module
-      uses: azure/login@v1.1
-      with:
-        creds: ${{secrets.AZURE_CREDENTIALS}}
-        enable-AzPSSession: true 
-
-    # Export needed env. vars for login
-    - name: Export environment vars
-      run: |
-        export ARM_CLIENT_ID=${{secrets.CLIENT_ID}}
-        export ARM_CLIENT_SECRET=${{secrets.CLIENT_SECRET}}
-        export ARM_SUBSCRIPTION_ID=${{secrets.SUBSCRIPTION_ID}}
-        export ARM_TENANT_ID=${{secrets.TENANT_ID}}
     
     # Install the latest version of Terraform CLI
     - name: Setup Terraform
@@ -62,7 +47,14 @@ jobs:
         cd Terraform && terraform apply -no-color -auto-approve infraplan
         echo ::set-env name=WEBAPPNAME::$(terraform output name)
         echo ::set-env name=RSG::$(terraform output resource_group)
-              
+
+    # Login with Az Creds in Az CLI and Az PS
+    - name: Login via Az module
+      uses: azure/login@v1.1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+        enable-AzPSSession: true
+  
     - name: Get Publish Settings from WebApp
       id: get_publishSettings
       uses: azure/powershell@v1
